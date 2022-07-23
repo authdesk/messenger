@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
 use App\Models\User;
-use App\Models\Admin;
 use App\models\Message;
 use Pusher\Pusher;
 use DB;
@@ -15,19 +14,16 @@ class MessengerController extends Controller
 {
     public function messenger()
     {
-        $admin_id = Auth::guard('admin')->user()->id;
+        $admin_id = Auth::user()->id;
         $users = User::get();
-
-        // count how many message are unread from the selected user
-       /* $users = DB::select("select users.id, users.username, users.email, count(is_read) as unread 
-        from users LEFT  JOIN  messages ON users.id = messages.from and is_read = 0 and messages.to = " . $admin_id . "
-        group by users.id, users.username, users.email"); */
 
 
         $users = DB::table('users')->leftJoin('messages', function ($q) {
                             $q->on('users.id', '=', 'messages.from')
                                 ->where('messages.is_read', '=', 0);
                         })
+                        ->where('account_type', "user")
+                        ->where('isMain', 0)
                         ->select('users.id','users.username','users.email', DB::raw("count(is_read) as unread"))
                         ->groupBy('users.id','users.username','users.email')
                         ->get();
@@ -40,19 +36,19 @@ class MessengerController extends Controller
     public function message($user_id)
     {
 
-        $my_id = Auth::guard('admin')->user()->id;
+        $user_id;
+
+        $my_id = Auth::user()->id;
 
         $sender = User::findOrFail($user_id);
 
         
         // Make read all unread message
-         Message::where(['from' => $user_id, 'to' => $my_id])->update(['is_read' => 1]);
+        Message::where(['from' => $user_id, 'to' => $my_id])->update(['is_read' => 1]);
 
         // Get all message from selected user
-         $messages = Message::where(function ($q) use ($user_id, $my_id) {
+        $messages = Message::where(function ($q) use ($user_id, $my_id) {
                                 $q->where('from', $user_id)->where('to', $my_id);
-                            })->orWhere(function ($q) use ($user_id, $my_id) {
-                                $q->where('from', $my_id)->where('to', $user_id);
                             })->get(); 
 
         return view('admin.messenger.messages.messages', compact('my_id','messages', 'sender'));
@@ -63,7 +59,7 @@ class MessengerController extends Controller
     public function send_message(Request $request)
     {
         
-            $admin_id = Auth::guard('admin')->user()->id;
+            $admin_id = Auth::user()->id;
 
             $from = $admin_id;
             $to = $request->receiver_id;

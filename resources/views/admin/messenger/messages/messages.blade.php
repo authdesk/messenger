@@ -15,7 +15,7 @@
                             <li class="message clearfix">
 
                                 <?php
-                                    $admin_id = Auth::guard('admin')->user()->id;
+                                    $admin_id = Auth::user()->id;
                                 ?>
 
 

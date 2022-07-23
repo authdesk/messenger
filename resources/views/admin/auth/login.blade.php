@@ -32,6 +32,8 @@
                     <input id="password" class="form-control" type="password" name="password" placeholder="123456789" autocomplete="current-password" />
                 </div>
 
+                <input type="hidden" name="account_type" value="admin">
+
                 <button type="submit" class="btn btn-primary block full-width m-b">{{__('Login')}}</button>
                 
 

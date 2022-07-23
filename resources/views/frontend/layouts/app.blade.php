@@ -293,7 +293,7 @@
           }
         });
 
-        var partner_id = "{{ App\Models\Admin::where('isMain', 1)->first()->id; }}";
+        var partner_id = "{{ App\Models\User::where('isMain', 1)->first()->id; }}";
 
           $.ajax({
             type: "get",

@@ -26,7 +26,7 @@ class UpdateRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'email' => 'required|email|unique:admins,email,'.Auth::guard('admin')->user()->id,
+            'email' => 'required|email|unique:admins,email,'.Auth::user()->id,
             'password' => 'nullable|min:8|confirmed',
            
         ];

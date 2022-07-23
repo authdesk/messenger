@@ -44,7 +44,7 @@
 
                                         <div class="media-body ">
                                             <p class="name">
-                                                {{$admin->name ?? ''}} <br>
+                                                {{$admin->username ?? ''}} <br>
                                                 <small>{{$admin->email ?? ''}}</small>
                                             </p>
                                         </div>
@@ -65,7 +65,7 @@
         <div class="col-md-12 mx-auto">
             <div class="card">
                 <div class="card-header chatbox-header text-center">
-                    <span>{{$admin->name}}</span>
+                    <span>{{$admin->username}}</span>
                     <input type="hidden" name="partner_id" id="partner_id" value="{{$admin->id}}">
                 </div>
                 <div class="card-body chat-care messenger-message-div" id="messages" style="height:500px;">

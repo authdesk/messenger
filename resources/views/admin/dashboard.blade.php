@@ -20,7 +20,7 @@
                     </a>                    
                 </li>
                 <?php
-                $admin = App\Models\Admin::find(Auth::guard('admin')->user()->id); 
+                $admin = App\Models\User::find(Auth::user()->id); 
                 ?>
                 
                 
@@ -43,7 +43,7 @@
                 </li>
 
                 <?php
-          $admin_id = App\Models\Admin::where('isMain', 1)->first()->id;
+          $admin_id = App\Models\User::where('isMain', 1)->first()->id;
           $user_messages = App\Models\Message::where('from', '!=',$admin_id)
                           ->where('is_read', 0)
                           ->count();
@@ -90,11 +90,11 @@
                 <ul class="nav navbar-top-links navbar-right">
                     <li class="mr-3">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="block m-t-xs font-bold">{{ Auth::guard('admin')->user()->name ?? '' }}  <b class="caret"></b></span>
+                            <span class="block m-t-xs font-bold">{{ Auth::user()->username ?? '' }}  <b class="caret"></b></span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                        <li class="dropdown-item mt-1" >{{__('Name:')}} {{ Auth::guard('admin')->user()->name ?? '' }} </li>
-                            <li class="dropdown-item mt-1" >{{__('Email:')}} {{ Auth::guard('admin')->user()->email ?? '' }} </li>
+                        <li class="dropdown-item mt-1" >{{__('Name:')}} {{ Auth::user()->username ?? '' }} </li>
+                            <li class="dropdown-item mt-1" >{{__('Email:')}} {{ Auth::user()->email ?? '' }} </li>
                          
                            
                             <li class="dropdown-divider"></li>

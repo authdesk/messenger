@@ -236,7 +236,7 @@
     <script>
 
         var receiver_id = '';
-        var my_id = "{{ Auth::guard('admin')->user()->id }}";
+        var my_id = "{{ Auth::user()->id }}";
 
         $(document).ready(function () {
   
@@ -349,7 +349,7 @@
     <script>
 
 var receiver_id = '';
-        var my_id = "{{ Auth::guard('admin')->user()->id }}";
+        var my_id = "{{ Auth::user()->id }}";
                 $(document).ready(function () {
   
   //ajax setup form csrf token

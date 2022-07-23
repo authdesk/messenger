@@ -17,12 +17,14 @@ class MessengerController extends Controller
     public function user_messenger()
     {
 
-        $admin = DB::table('admins')->leftJoin('messages', function ($q) {
-                            $q->on('admins.id', '=', 'messages.from')
+        $admin = DB::table('users')->leftJoin('messages', function ($q) {
+                            $q->on('users.id', '=', 'messages.from')
                                 ->where('messages.is_read', '=', 0);
                         })
-                        ->select('admins.id','admins.name','admins.email', DB::raw("count(is_read) as unread"))
-                        ->groupBy('admins.id','admins.name','admins.email')
+                        ->where('account_type', "admin")
+                        ->where('isMain', 1)
+                        ->select('users.id','users.username','users.email', DB::raw("count(is_read) as unread"))
+                        ->groupBy('users.id','users.username','users.email')
                         ->first();
 
 

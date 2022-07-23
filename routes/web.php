@@ -52,7 +52,7 @@ Route::middleware('auth')->group(function(){
 
 Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function(){
     
-    Route::namespace('Auth')->middleware('guest:admin')->group(function(){
+    Route::namespace('Auth')->middleware('guest:web')->group(function(){
 
         //admin login route
         Route::get('/login', [AdminAuthenticatedSessionController::class, 'create'])->name('login');

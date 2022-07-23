@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\SuperAdmin\StoreRequest;
 use App\Http\Requests\Admin\SuperAdmin\UpdateRequest;
@@ -19,8 +19,8 @@ class SuperAdminController extends Controller
     public function index()
     {
        
-        $isAdmin = Admin::find(Auth::guard('admin')->user()->id); 
-        $admins = Admin::all();
+        $isAdmin = User::find(Auth::user()->id); 
+        $admins = User::all();
         return view('admin.super_admin.all', compact('admins','isAdmin'));
     
 
@@ -55,7 +55,7 @@ class SuperAdminController extends Controller
 
             //insert data
 
-            $insert = Admin::create([
+            $insert = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
@@ -75,7 +75,7 @@ class SuperAdminController extends Controller
 
     public function make_super_admin($id)
     {
-        Admin::findOrFail($id)->update(['isMain' => 1]);
+        User::findOrFail($id)->update(['isMain' => 1]);
         Toastr::success('Super admin made successfully!', 'Message', ["positionClass" => "toast-top-right"]);
         return redirect()->route('admin.super-admin.index');
     }
@@ -83,7 +83,7 @@ class SuperAdminController extends Controller
 
     public function make_admin($id)
     {
-        Admin::findOrFail($id)->update(['isMain' => 0]);
+        User::findOrFail($id)->update(['isMain' => 0]);
         Toastr::success('Super admin cancelled!', 'Message', ["positionClass" => "toast-top-right"]);
         return redirect()->route('admin.super-admin.index');
     }
@@ -96,7 +96,7 @@ class SuperAdminController extends Controller
      */
     public function show($id)
     {
-        $admin = Admin::findOrFail( $id);
+        $admin = User::findOrFail( $id);
         return view('admin.super_admin.view', compact('admin'));  
     }
 
@@ -108,7 +108,7 @@ class SuperAdminController extends Controller
      */
     public function edit($id)
     {
-        $edit = Admin::findOrFail($id);
+        $edit = User::findOrFail($id);
         return view('admin.super_admin.edit', compact('edit'));
     }
 
@@ -128,14 +128,14 @@ class SuperAdminController extends Controller
             //update data
             if ($request->has('password')) {
                 $new_password = Hash::make($request->password);
-                $update = Admin::findOrFail($id)->update([
+                $update = User::findOrFail($id)->update([
                     'name' => $request->name,
                     'email' => $request->email,
                     'password' => $new_password
                 ]);
                 
             }else {
-                $update = Admin::findOrFail($id)->update([
+                $update = User::findOrFail($id)->update([
                     'name' => $request->name,
                     'email' => $request->email,
                 ]);
@@ -156,7 +156,7 @@ class SuperAdminController extends Controller
 
     public function destroy($id)
     {
-        $delete_admin = Admin::findOrFail($id)->delete();
+        $delete_admin = User::findOrFail($id)->delete();
         
         if ($delete_admin) {
             Toastr::success('Admin deleted successfully!', 'Message', ["positionClass" => "toast-top-right"]);

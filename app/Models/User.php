@@ -23,7 +23,8 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
-        'account_type'
+        'account_type',
+        'isMain'
     ];
 
     public $timestamps = true;

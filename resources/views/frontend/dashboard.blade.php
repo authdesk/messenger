@@ -5,7 +5,7 @@
 $settings = App\Models\Setting::latest()->first();
 
 if (Auth::check()) {
-  $admin = App\Models\Admin::where('isMain', 1)->first();
+  $admin = App\Models\User::where('isMain', 1)->first();
       
 $admin_id = $admin->id;
 $user_id = Auth::user()->id;
@@ -158,7 +158,7 @@ $admin_message = App\Models\Message::where('from',$admin_id)->where('is_read', 0
 
     <div class="card main-card" id="chatbot">
       <div class="card-header chatbot-header">
-        <span class="user chatbox-title " id=""> {{$admin->name}}
+        <span class="user chatbox-title " id=""> {{$admin->username}}
           <input type="hidden" name="partner_id" id="partner_id" value="{{$admin->id}}">
         </span>
         <button class="btn btn-default float-right chatbot-close-btn"><i class="fa fa-times"></i></button>
